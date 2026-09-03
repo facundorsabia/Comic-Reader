@@ -1,0 +1,11 @@
+¡Hola!
+Coloca aquí tus 56 archivos PDF. 
+
+Pueden tener nombres como:
+- 1.pdf, 2.pdf, ..., 56.pdf
+o
+- pagina_01.pdf, pagina_02.pdf, ..., pagina_56.pdf
+
+El script los ordenará automáticamente de forma numérica natural.
+Una vez que los copies aquí, ejecuta en tu terminal:
+  npm run convert

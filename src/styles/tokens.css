@@ -1,0 +1,73 @@
+:root {
+  /* Cyberpunk Color Palette */
+  --bg-app: #05070b;
+  --bg-surface: rgba(10, 14, 23, 0.88);
+  --bg-surface-elevated: rgba(15, 21, 36, 0.95);
+  --bg-overlay: rgba(3, 5, 8, 0.9);
+  
+  --neon-cyan: #00f0ff;
+  --neon-cyan-hover: #38f9d7;
+  --neon-cyan-glow: rgba(0, 240, 255, 0.45);
+  --neon-cyan-subtle: rgba(0, 240, 255, 0.12);
+
+  --neon-pink: #ff0055;
+  --neon-pink-hover: #ff2a75;
+  --neon-pink-glow: rgba(255, 0, 85, 0.45);
+  --neon-pink-subtle: rgba(255, 0, 85, 0.12);
+
+  --neon-yellow: #ffe600;
+  --neon-yellow-glow: rgba(255, 230, 0, 0.4);
+
+  --neon-purple: #9d00ff;
+  --neon-purple-glow: rgba(157, 0, 255, 0.4);
+
+  --border-subtle: rgba(0, 240, 255, 0.18);
+  --border-focus: var(--neon-cyan);
+  --border-strong: rgba(0, 240, 255, 0.5);
+
+  --accent-primary: var(--neon-cyan);
+  --accent-primary-hover: var(--neon-cyan-hover);
+  --accent-glow: var(--neon-cyan-glow);
+
+  --text-primary: #f0f6fc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --text-cyber: var(--neon-cyan);
+  --text-inverse: #05070b;
+
+  /* Book Realistic Depth in Cyber Ambiance */
+  --book-spine-dark: rgba(0, 0, 0, 0.85);
+  --book-gutter-shadow: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 12%, rgba(0,0,0,0) 25%);
+  --book-gutter-shadow-left: linear-gradient(to left, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 12%, rgba(0,0,0,0) 25%);
+  --book-shadow-outer: 0 20px 60px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 240, 255, 0.08), 0 0 1px rgba(0, 240, 255, 0.3);
+
+  /* Typography */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Layout & Sizing */
+  --header-height: 64px;
+  --bottombar-height: 76px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  /* Cyber Cut Shapes */
+  --cyber-cut-sm: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  --cyber-cut-md: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  --cyber-cut-tab: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 140ms;
+  --duration-normal: 260ms;
+}
+
+[data-theme='oled'] {
+  --bg-app: #000000;
+  --bg-surface: rgba(5, 5, 8, 0.95);
+  --bg-surface-elevated: rgba(10, 10, 15, 0.98);
+}

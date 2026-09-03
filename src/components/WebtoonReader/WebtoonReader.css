@@ -1,0 +1,358 @@
+.webtoon-container {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  background-color: var(--bg-app);
+  display: block;
+  padding: 20px 0 60px 0;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+}
+
+.webtoon-container.can-pan {
+  cursor: grab;
+}
+
+.webtoon-container.is-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important; /* Instant response while dragging */
+}
+
+.webtoon-feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: width 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 100%;
+}
+
+.webtoon-page-item {
+  position: relative;
+  width: 100%;
+  margin: 0 0 20px 0;
+  padding: 0;
+  line-height: 0;
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 240, 255, 0.06);
+  background: #080b12;
+  content-visibility: auto;
+  contain-intrinsic-size: 850px 1275px;
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.webtoon-page-item:hover {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 240, 255, 0.12);
+}
+
+.webtoon-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Page badge */
+.webtoon-page-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(6, 10, 18, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--neon-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border: 1px solid var(--neon-cyan);
+  clip-path: var(--cyber-cut-sm);
+  pointer-events: none;
+  box-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+/* Quick Page Zoom button */
+.webtoon-zoom-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all var(--duration-fast) var(--ease-spring);
+  z-index: 5;
+  background: rgba(6, 10, 18, 0.92) !important;
+  border-color: var(--neon-cyan) !important;
+  color: var(--neon-cyan) !important;
+}
+
+.webtoon-page-item:hover .webtoon-zoom-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.webtoon-end-card {
+  width: 100%;
+  margin: 40px 0 100px 0;
+  padding: 40px 20px;
+  text-align: center;
+  border: 1px solid var(--neon-cyan);
+  clip-path: var(--cyber-cut-md);
+  box-shadow: 0 0 30px var(--neon-cyan-glow);
+  line-height: 1.5;
+  background: rgba(8, 12, 20, 0.92);
+}
+
+.webtoon-end-card h3 {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+.webtoon-end-card p {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+/* ==================================================== */
+/* CYBERPUNK FLOATING ZOOM HUD                          */
+/* ==================================================== */
+.webtoon-zoom-hud {
+  position: fixed;
+  bottom: calc(var(--bottombar-height) + 16px);
+  right: 24px;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(6, 10, 18, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-focus);
+  clip-path: var(--cyber-cut-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 25px var(--neon-cyan-glow);
+  transition: transform var(--duration-normal) var(--ease-spring), opacity var(--duration-fast);
+  pointer-events: auto;
+  min-width: 270px;
+}
+
+.webtoon-zoom-hud.minimized {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none;
+}
+
+.webtoon-zoom-hud.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+}
+
+.hud-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan-glow);
+}
+
+.hud-pan-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--neon-pink);
+  text-shadow: 0 0 6px var(--neon-pink-glow);
+  animation: pulseNeon 2s infinite ease-in-out;
+}
+
+@keyframes pulseNeon {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.hud-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  clip-path: var(--cyber-cut-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.hud-btn:hover:not(:disabled) {
+  background: rgba(0, 240, 255, 0.25);
+  border-color: var(--neon-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 12px var(--neon-cyan-glow);
+  transform: scale(1.08);
+}
+
+.hud-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.hud-slider-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.hud-zoom-slider {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  background: rgba(0, 240, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.hud-zoom-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--neon-cyan);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Cyber diamond */
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  transition: transform 0.15s;
+}
+
+.hud-zoom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.hud-percent-badge {
+  padding: 4px 8px;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  clip-path: var(--cyber-cut-sm);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  cursor: pointer;
+  min-width: 48px;
+  text-align: center;
+  transition: all var(--duration-fast);
+}
+
+.hud-percent-badge:hover {
+  background: rgba(0, 240, 255, 0.25);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan-glow);
+}
+
+.hud-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.hud-preset-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 6px;
+  background: rgba(10, 16, 28, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  clip-path: var(--cyber-cut-sm);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.hud-preset-btn:hover {
+  border-color: var(--neon-cyan);
+  color: #ffffff;
+  background: rgba(0, 240, 255, 0.15);
+}
+
+.hud-preset-btn.active {
+  background: rgba(0, 240, 255, 0.25);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+/* Floating Status Toast */
+.webtoon-toast {
+  position: fixed;
+  top: calc(var(--header-height) + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
+  padding: 8px 18px;
+  background: rgba(6, 10, 18, 0.94);
+  border: 1px solid var(--neon-cyan);
+  clip-path: var(--cyber-cut-md);
+  box-shadow: 0 0 25px var(--neon-cyan-glow);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  pointer-events: none;
+  animation: toastPop 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastPop {
+  from { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@media (max-width: 768px) {
+  .webtoon-zoom-hud {
+    bottom: calc(var(--bottombar-height) + 12px);
+    right: 12px;
+    left: 12px;
+    min-width: auto;
+  }
+}

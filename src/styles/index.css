@@ -1,0 +1,245 @@
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden !important;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(255, 0, 85, 0.03) 0%, transparent 50%);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(5, 7, 11, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.25);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+/* Glassmorphism Classes with Cyber Accents */
+.glass-panel {
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.glass-pill {
+  background: rgba(0, 240, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ==================================================== */
+/* CYBERPUNK BUTTONS & CONTROLS                        */
+/* ==================================================== */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 16, 28, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  color: var(--text-primary);
+  width: 38px;
+  height: 38px;
+  clip-path: var(--cyber-cut-sm);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.icon-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--duration-fast);
+  pointer-events: none;
+}
+
+.icon-btn:hover {
+  border-color: var(--neon-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 15px var(--neon-cyan-glow), inset 0 0 10px rgba(0, 240, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.icon-btn:hover::before {
+  opacity: 1;
+}
+
+.icon-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.icon-btn.active {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 18px var(--neon-cyan-glow), inset 0 0 12px rgba(0, 240, 255, 0.35);
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* Cyber Button with Text */
+.cyber-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 20px;
+  background: rgba(10, 16, 28, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  clip-path: var(--cyber-cut-md);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.cyber-btn:hover:not(:disabled) {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.12);
+  box-shadow: 0 0 20px var(--neon-cyan-glow), inset 0 0 14px rgba(0, 240, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.cyber-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+.cyber-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Cyber Button Pink / Action */
+.cyber-btn-pink {
+  background: linear-gradient(135deg, rgba(255, 0, 85, 0.25), rgba(255, 0, 85, 0.1));
+  border-color: rgba(255, 0, 85, 0.6);
+  color: #ffffff;
+}
+
+.cyber-btn-pink:hover:not(:disabled) {
+  border-color: var(--neon-pink);
+  background: linear-gradient(135deg, rgba(255, 0, 85, 0.4), rgba(255, 0, 85, 0.2));
+  box-shadow: 0 0 22px var(--neon-pink-glow), inset 0 0 14px rgba(255, 0, 85, 0.3);
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+/* Tech corner decorative brackets */
+.cyber-hud-corner-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--neon-cyan);
+  border-left: 2px solid var(--neon-cyan);
+  pointer-events: none;
+}
+
+.cyber-hud-corner-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid var(--neon-cyan);
+  border-right: 2px solid var(--neon-cyan);
+  pointer-events: none;
+}
+
+/* Cyber Badge */
+.cyber-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: var(--neon-cyan);
+  clip-path: var(--cyber-cut-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Animated Toast */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.toast-notification {
+  animation: toastSlideIn 300ms var(--ease-spring) forwards;
+}
+
+.animate-fade {
+  animation: fadeIn var(--duration-normal) var(--ease-smooth) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

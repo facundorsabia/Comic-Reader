@@ -1,0 +1,259 @@
+.book-stage {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  perspective: 1800px;
+  user-select: none;
+  cursor: default;
+  overflow: hidden !important;
+  box-sizing: border-box;
+}
+
+/* Nav zones on the edges */
+.book-nav-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8%;
+  min-width: 50px;
+  max-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+.zone-left {
+  left: 0;
+}
+
+.zone-right {
+  right: 0;
+}
+
+.book-nav-zone:hover {
+  opacity: 1;
+}
+
+.zone-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(6, 10, 18, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--neon-cyan);
+  clip-path: var(--cyber-cut-md);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-cyan-glow), inset 0 0 10px rgba(0, 240, 255, 0.2);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.book-nav-zone:hover .zone-arrow {
+  transform: scale(1.15);
+  background: rgba(0, 240, 255, 0.2);
+  box-shadow: 0 0 30px var(--neon-cyan-glow), inset 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+/* Book Container (Centered & Proportionally contained) */
+.book-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-width: calc(100vw - 120px);
+  max-height: 100%;
+  margin: 0 auto;
+  transition: transform 300ms var(--ease-smooth), opacity 300ms var(--ease-smooth);
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+}
+
+.book-container.turning-next {
+  animation: pageTurnAnimNext 280ms var(--ease-smooth);
+}
+
+.book-container.turning-prev {
+  animation: pageTurnAnimPrev 280ms var(--ease-smooth);
+}
+
+@keyframes pageTurnAnimNext {
+  0% { transform: perspective(1800px) rotateY(0deg) scale(1); }
+  50% { transform: perspective(1800px) rotateY(-2.5deg) scale(0.99); }
+  100% { transform: perspective(1800px) rotateY(0deg) scale(1); }
+}
+
+@keyframes pageTurnAnimPrev {
+  0% { transform: perspective(1800px) rotateY(0deg) scale(1); }
+  50% { transform: perspective(1800px) rotateY(2.5deg) scale(0.99); }
+  100% { transform: perspective(1800px) rotateY(0deg) scale(1); }
+}
+
+/* Cover Wrapper: Perfectly fits height and width within available area */
+.book-cover-wrapper {
+  position: relative;
+  display: flex;
+  height: 100%;
+  max-height: 100%;
+  max-width: calc(100vw - 120px);
+  aspect-ratio: 1600 / 2400;
+  box-shadow: var(--book-shadow-outer);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 4px 10px 10px 4px;
+}
+
+.book-cover-wrapper .book-page {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px 10px 10px 4px;
+}
+
+.book-thickness-edge {
+  position: absolute;
+  top: 4px;
+  right: -8px;
+  bottom: 4px;
+  width: 8px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #2a3545 0px,
+    #2a3545 1px,
+    #0d1420 2px,
+    #2a3545 3px
+  );
+  border-right: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 0 3px 3px 0;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Spread Wrapper: Two Pages Side by Side without any overlap */
+.book-spread-wrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 100%;
+  max-height: 100%;
+  max-width: calc(100vw - 120px);
+  aspect-ratio: 3200 / 2400;
+  box-shadow: var(--book-shadow-outer);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 6px;
+  background: #090c14;
+  overflow: hidden;
+}
+
+/* Single Page Item */
+.book-page {
+  position: relative;
+  flex: 1;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0b0e18;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.page-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Cyber Zoom button on hover */
+.page-zoom-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all var(--duration-fast) var(--ease-spring);
+  z-index: 5;
+  background: rgba(6, 10, 18, 0.9) !important;
+  border-color: var(--neon-cyan) !important;
+  color: var(--neon-cyan) !important;
+}
+
+.book-page:hover .page-zoom-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Spine Groove and Crease Shadows */
+.book-spine-groove {
+  width: 4px;
+  background: linear-gradient(to right, rgba(0,0,0,0.95), rgba(0, 240, 255, 0.15), rgba(0,0,0,0.95));
+  position: relative;
+  z-index: 4;
+  box-shadow: 0 0 12px rgba(0,0,0,0.9);
+}
+
+.gutter-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.gutter-shadow-left {
+  right: 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.15) 30%, transparent 100%);
+}
+
+.gutter-shadow-right {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.15) 30%, transparent 100%);
+}
+
+.page-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.02) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.end-of-comic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--neon-pink);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: #05070c;
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+@media (max-width: 1024px) {
+  .book-container {
+    max-width: calc(100vw - 32px);
+  }
+  .book-spread-wrapper, .book-cover-wrapper {
+    max-width: calc(100vw - 32px);
+  }
+}
