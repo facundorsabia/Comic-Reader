@@ -124,6 +124,12 @@
   z-index: 1;
 }
 
+@media (min-width: 900px) {
+  .comic-bottombar {
+    display: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .comic-bottombar {
     padding: 0 12px;

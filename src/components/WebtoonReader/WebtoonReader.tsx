@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { ComicPage } from '../../types/comic';
 import { ZoomIn, ZoomOut, Maximize2, RotateCcw, Move, Sparkles } from 'lucide-react';
+import { useWebtoonZoom, type WebtoonZoomControls } from '../../hooks/useWebtoonZoom';
 import './WebtoonReader.css';
 
 interface WebtoonReaderProps {
@@ -9,6 +10,7 @@ interface WebtoonReaderProps {
   onPageChange: (page: number) => void;
   onToggleControls: () => void;
   controlsVisible?: boolean;
+  zoomControls?: WebtoonZoomControls;
 }
 
 export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
@@ -17,19 +19,31 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
   onPageChange,
   onToggleControls,
   controlsVisible = true,
+  zoomControls: externalZoom,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const pageRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const isProgrammaticScroll = useRef(false);
   const scrollTimeout = useRef<any>(null);
 
-  // Zoom state: 50% to 400%
-  // fitMode: 'fit-width' (100% screen width), 'comfort' (standard reading ~850px), or 'custom' (percentage zoom)
-  const [zoomPercent, setZoomPercent] = useState<number>(100);
-  const [fitMode, setFitMode] = useState<'fit-width' | 'comfort' | 'custom'>('comfort');
+  const localZoom = useWebtoonZoom();
+  const zoom = externalZoom || localZoom;
+
+  const {
+    zoomPercent,
+    fitMode,
+    isZoomedWide,
+    toastMessage,
+    applyZoom,
+    handleZoomIn,
+    handleZoomOut,
+    handleResetComfort,
+    handleFitWidth,
+    handleNative100,
+    getFeedWidthStyle,
+  } = zoom;
+
   const [isDragging, setIsDragging] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const toastTimeoutRef = useRef<any>(null);
 
   // Drag-to-pan state
   const dragStartRef = useRef<{ x: number; y: number; scrollLeft: number; scrollTop: number }>({
@@ -40,207 +54,34 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
   });
   const hasDraggedRef = useRef(false);
 
-  const showToast = useCallback((msg: string) => {
-    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    setToastMessage(msg);
-    toastTimeoutRef.current = setTimeout(() => {
-      setToastMessage(null);
-    }, 2400);
-  }, []);
-
-  // Compute feed width style based on fitMode & zoomPercent
-  const getFeedWidthStyle = () => {
-    if (fitMode === 'fit-width') {
-      return { width: '100%', maxWidth: '100%', padding: '0 8px' };
-    }
-    if (fitMode === 'comfort') {
-      return { width: '100%', maxWidth: '850px', padding: '0 16px' };
-    }
-    // Custom zoom percentage: 100% = 850px, 200% = 1700px (close to native 1600px width), up to 400%
-    const calculatedWidth = Math.round(850 * (zoomPercent / 100));
-    return {
-      width: `${calculatedWidth}px`,
-      maxWidth: 'none',
-      padding: '0 24px',
-    };
-  };
-
-  // Zoom helpers
-  const applyZoom = useCallback((newPercent: number) => {
-    const clamped = Math.max(50, Math.min(400, Math.round(newPercent)));
-    setZoomPercent(clamped);
-    setFitMode('custom');
-  }, []);
-
-  const handleZoomIn = useCallback(() => {
-    applyZoom(zoomPercent + 25);
-  }, [applyZoom, zoomPercent]);
-
-  const handleZoomOut = useCallback(() => {
-    applyZoom(zoomPercent - 25);
-  }, [applyZoom, zoomPercent]);
-
-  const handleResetComfort = useCallback(() => {
-    setFitMode('comfort');
-    setZoomPercent(100);
-    showToast('Modo Lectura Centrada (100%)');
-  }, [showToast]);
-
-  const handleFitWidth = useCallback(() => {
-    setFitMode('fit-width');
-    setZoomPercent(100);
-    showToast('Ajustado al ancho de pantalla');
-  }, [showToast]);
-
-  const handleNative100 = useCallback(() => {
-    // 1600px native image resolution corresponds to ~188% of 850px
-    applyZoom(188);
-    showToast('Resolución Nativa 1:1 (1600px)');
-  }, [applyZoom, showToast]);
-
-  // Double click to toggle zoom on that specific location/page
-  const handlePageDoubleClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, pageNum: number) => {
-      e.stopPropagation();
-      const container = containerRef.current;
-      if (!container) return;
-
-      if (fitMode === 'comfort' || (fitMode === 'custom' && zoomPercent <= 110)) {
-        // Zoom in to 175%
-        applyZoom(175);
-        showToast(`Zoom en Pág. ${pageNum} • 175%`);
-      } else {
-        // Reset to comfort reading
-        handleResetComfort();
-      }
-    },
-    [fitMode, zoomPercent, applyZoom, handleResetComfort, showToast]
-  );
-
-  // Click on page zoom button (focus page in continuous feed with high zoom)
-  const handlePageZoomBtn = useCallback(
-    (page: ComicPage) => {
-      const targetEl = pageRefs.current.get(page.pageNumber);
-      if (targetEl) {
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      if (zoomPercent < 150) {
-        applyZoom(175);
-      }
-      showToast(`Pág. ${page.pageNumber} enfocada • Scroll continuo activo`);
-    },
-    [zoomPercent, applyZoom, showToast]
-  );
-
-  // Wheel zoom when Ctrl/Cmd is held, or trackpad pinch
+  // Scroll listener with IntersectionObserver to track active page
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault();
-        const delta = -e.deltaY * 0.5;
-        setZoomPercent((prev) => {
-          const next = Math.max(50, Math.min(400, Math.round(prev + delta)));
-          return next;
-        });
-        setFitMode('custom');
-      }
-    };
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => container.removeEventListener('wheel', handleWheel);
-  }, []);
-
-  // Keyboard zoom shortcuts (+ / - / 0)
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
-
-      if (e.key === '+' || e.key === '=') {
-        e.preventDefault();
-        handleZoomIn();
-      } else if (e.key === '-' || e.key === '_') {
-        e.preventDefault();
-        handleZoomOut();
-      } else if (e.key === '0') {
-        e.preventDefault();
-        handleFitWidth();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleZoomIn, handleZoomOut, handleFitWidth]);
-
-  // Drag to pan when zoomed
-  const handleMouseDown = (e: React.MouseEvent) => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    // Only initiate drag with primary mouse button if not clicking an interactive control
-    if (e.button !== 0 || (e.target as HTMLElement).closest('button, input')) return;
-
-    setIsDragging(true);
-    hasDraggedRef.current = false;
-    dragStartRef.current = {
-      x: e.clientX,
-      y: e.clientY,
-      scrollLeft: container.scrollLeft,
-      scrollTop: container.scrollTop,
-    };
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const container = containerRef.current;
-    if (!container) return;
-
-    const dx = e.clientX - dragStartRef.current.x;
-    const dy = e.clientY - dragStartRef.current.y;
-
-    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
-      hasDraggedRef.current = true;
-    }
-
-    container.scrollLeft = dragStartRef.current.scrollLeft - dx;
-    container.scrollTop = dragStartRef.current.scrollTop - dy;
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // IntersectionObserver to detect which page is currently in view
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         if (isProgrammaticScroll.current) return;
 
+        // Find the entry that has the highest intersection ratio or is visible near the top third
         let bestEntry: IntersectionObserverEntry | null = null;
+        let maxRatio = 0;
+
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
-              bestEntry = entry;
-            }
+          if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+            maxRatio = entry.intersectionRatio;
+            bestEntry = entry;
           }
         }
 
-        if (bestEntry) {
+        if (bestEntry && maxRatio > 0.25) {
           const pageNum = parseInt(bestEntry.target.getAttribute('data-page') || '1', 10);
-          if (pageNum && pageNum !== currentPage) {
+          if (!isNaN(pageNum) && pageNum !== currentPage) {
             onPageChange(pageNum);
           }
         }
       },
       {
-        root: container,
-        threshold: [0.1, 0.35, 0.6],
-        rootMargin: '-5% 0px -5% 0px',
+        root: containerRef.current,
+        threshold: [0.1, 0.3, 0.5, 0.7, 0.9],
+        rootMargin: '-10% 0px -40% 0px',
       }
     );
 
@@ -248,29 +89,104 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
       if (el) observer.observe(el);
     });
 
-    return () => observer.disconnect();
-  }, [pages, onPageChange, currentPage, fitMode, zoomPercent]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [pages, currentPage, onPageChange]);
 
-  // Jump/scroll to page when changed from outside (e.g. BottomBar buttons, slider, drawer)
-  const lastPageRef = useRef(currentPage);
+  // Drag to pan horizontally/vertically when zoomed
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Only enable mouse drag if clicking background/image, not buttons
+    if ((e.target as HTMLElement).closest('button, input, .webtoon-zoom-hud')) return;
+    if (!containerRef.current) return;
+
+    setIsDragging(true);
+    hasDraggedRef.current = false;
+    dragStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      scrollLeft: containerRef.current.scrollLeft,
+      scrollTop: containerRef.current.scrollTop,
+    };
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      hasDraggedRef.current = true;
+    }
+
+    containerRef.current.scrollLeft = dragStartRef.current.scrollLeft - dx;
+    containerRef.current.scrollTop = dragStartRef.current.scrollTop - dy;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Wheel zoom handler: pinch / Ctrl + wheel for continuous fine zoom
   useEffect(() => {
-    if (lastPageRef.current !== currentPage) {
-      lastPageRef.current = currentPage;
-      const targetEl = pageRefs.current.get(currentPage);
-      if (targetEl && containerRef.current) {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 12 : -12;
+        applyZoom(zoomPercent + delta);
+      }
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [applyZoom, zoomPercent]);
+
+  // Handle double click for quick smart zoom toggle on a page
+  const handlePageDoubleClick = (e: React.MouseEvent, pageNum: number) => {
+    e.stopPropagation();
+    if (fitMode === 'comfort' && zoomPercent === 100) {
+      // Zoom in to 180% (detail view)
+      applyZoom(180);
+    } else {
+      // Reset back to comfort reading
+      handleResetComfort();
+    }
+  };
+
+  // Focus a specific page and zoom in
+  const handlePageZoomBtn = (page: ComicPage) => {
+    const el = pageRefs.current.get(page.pageNumber);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    applyZoom(180);
+  };
+
+  // Scroll to current page when changed externally (from scrubber / thumbnails)
+  useEffect(() => {
+    const targetEl = pageRefs.current.get(currentPage);
+    if (targetEl && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const elRect = targetEl.getBoundingClientRect();
+
+      // Only scroll if page is substantially off-screen
+      const isOffScreen = elRect.top < containerRect.top - 150 || elRect.bottom > containerRect.bottom + 150;
+      if (isOffScreen) {
         isProgrammaticScroll.current = true;
         targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
         scrollTimeout.current = setTimeout(() => {
           isProgrammaticScroll.current = false;
-        }, 500);
+        }, 700);
       }
     }
   }, [currentPage]);
 
   const feedWidthStyles = getFeedWidthStyle();
-  const isZoomedWide = fitMode === 'custom' && zoomPercent > 115;
 
   return (
     <div
@@ -286,13 +202,12 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
           hasDraggedRef.current = false;
           return;
         }
-        if ((e.target as HTMLElement).closest('button, input, .webtoon-zoom-hud')) return;
+        if ((e.target as HTMLElement).closest('button, input, .webtoon-zoom-hud, .sidedock-panel')) return;
         onToggleControls();
       }}
     >
       <div className="webtoon-feed" style={feedWidthStyles}>
         {pages.map((page, index) => {
-          // Preload first 4 pages eagerly, rest lazily with decoding="async"
           const isPriority = index < 4;
           return (
             <div
@@ -328,10 +243,6 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
               >
                 <ZoomIn size={16} />
               </button>
-
-              <div className="webtoon-page-badge">
-                <span>PÁG {String(page.pageNumber).padStart(2, '0')}</span>
-              </div>
             </div>
           );
         })}
@@ -343,7 +254,7 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
         </div>
       </div>
 
-      {/* Cyberpunk Floating Zoom HUD */}
+      {/* Cyberpunk Floating Zoom HUD (used on mobile / fallback) */}
       <div className={`webtoon-zoom-hud glass-panel ${controlsVisible ? 'visible' : 'minimized'}`}>
         <div className="hud-header">
           <div className="hud-title">

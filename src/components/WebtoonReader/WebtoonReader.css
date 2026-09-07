@@ -8,8 +8,7 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   background-color: var(--bg-app);
-  display: block;
-  padding: 20px 0 60px 0;
+  padding: 0 0 24px 0;
   box-sizing: border-box;
   position: relative;
   user-select: none;
@@ -63,24 +62,7 @@
   pointer-events: none;
 }
 
-/* Page badge */
-.webtoon-page-badge {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: rgba(6, 10, 18, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--neon-cyan);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border: 1px solid var(--neon-cyan);
-  clip-path: var(--cyber-cut-sm);
-  pointer-events: none;
-  box-shadow: 0 0 10px var(--neon-cyan-glow);
-}
+
 
 /* Quick Page Zoom button */
 .webtoon-zoom-btn {
@@ -346,6 +328,12 @@
 @keyframes toastPop {
   from { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
   to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@media (min-width: 900px) {
+  .webtoon-zoom-hud {
+    display: none !important;
+  }
 }
 
 @media (max-width: 768px) {

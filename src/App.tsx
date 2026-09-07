@@ -4,12 +4,14 @@ import { Header } from './components/Header';
 import { BottomBar } from './components/BottomBar';
 import { BookReader } from './components/BookReader/BookReader';
 import { WebtoonReader } from './components/WebtoonReader/WebtoonReader';
+import { SideDock } from './components/SideDock/SideDock';
 import { ThumbnailDrawer } from './components/ThumbnailDrawer/ThumbnailDrawer';
 import { ZoomModal } from './components/ZoomModal/ZoomModal';
 import { HelpModal } from './components/HelpModal';
 import { useComicProgress } from './hooks/useComicProgress';
 import { useFullscreen } from './hooks/useFullscreen';
 import { useKeyboardNav } from './hooks/useKeyboardNav';
+import { useWebtoonZoom } from './hooks/useWebtoonZoom';
 import { BookmarkCheck, AlertCircle, RefreshCw } from 'lucide-react';
 import './App.css';
 
@@ -18,10 +20,8 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Responsive default mode: mobile -> webtoon, desktop -> book
-  const [mode, setMode] = useState<ReaderMode>(() => {
-    return window.innerWidth < 768 ? 'webtoon' : 'book';
-  });
+  // Modo de lectura por defecto: webtoon
+  const [mode, setMode] = useState<ReaderMode>('webtoon');
 
   const [controlsVisible, setControlsVisible] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -30,6 +30,7 @@ export const App: React.FC = () => {
 
   const { currentPage, setPage, savedPage, clearSaved } = useComicProgress(1);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const zoomControls = useWebtoonZoom();
 
   // Load manifest.json
   const fetchManifest = useCallback(async () => {
@@ -50,16 +51,6 @@ export const App: React.FC = () => {
   useEffect(() => {
     fetchManifest();
   }, [fetchManifest]);
-
-  // Handle window resize for mode recommendation
-  useEffect(() => {
-    const handleResize = () => {
-      // Only auto-switch if user hasn't explicitly chosen
-      // Or keep user's current choice
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Navigation handlers
   const totalPages = manifest?.pages.length || 0;
@@ -138,7 +129,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="app-viewport">
-      {/* Top Header */}
+      {/* Mobile Top Header (hidden on desktop) */}
       <Header
         title={manifest.title}
         currentPage={currentPage}
@@ -170,11 +161,12 @@ export const App: React.FC = () => {
             onPageChange={setPage}
             onToggleControls={handleToggleControls}
             controlsVisible={controlsVisible}
+            zoomControls={zoomControls}
           />
         )}
       </main>
 
-      {/* Bottom Bar */}
+      {/* Mobile Bottom Bar (hidden on desktop) */}
       <BottomBar
         currentPage={currentPage}
         totalPages={totalPages}
@@ -182,6 +174,26 @@ export const App: React.FC = () => {
         onPrev={handlePrev}
         onNext={handleNext}
         visible={controlsVisible}
+      />
+
+      {/* Desktop Unified Side Dock (all controls on the side in desktop) */}
+      <SideDock
+        title={manifest.title}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        mode={mode}
+        onModeChange={setMode}
+        isFullscreen={isFullscreen}
+        onToggleFullscreen={toggleFullscreen}
+        isDrawerOpen={isDrawerOpen}
+        onToggleDrawer={() => setIsDrawerOpen((prev) => !prev)}
+        onOpenHelp={() => setIsHelpOpen(true)}
+        onPageChange={setPage}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        visible={controlsVisible}
+        onToggleVisible={handleToggleControls}
+        zoomControls={zoomControls}
       />
 
       {/* Saved Reading Progress Toast */}
@@ -231,4 +243,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

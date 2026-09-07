@@ -23,6 +23,22 @@
   flex-direction: column;
 }
 
+@media (min-width: 900px) {
+  .app-viewport {
+    display: block;
+  }
+  .reader-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
+
 /* Loading & Center Screen */
 .center-screen {
   width: 100vw;
@@ -135,7 +151,6 @@
   color: var(--neon-yellow);
 }
 
-/* Resume Toast */
 .resume-toast {
   position: absolute;
   bottom: calc(var(--bottombar-height) + 16px);
@@ -150,6 +165,14 @@
   clip-path: var(--cyber-cut-md);
   box-shadow: 0 0 25px var(--neon-cyan-glow);
   z-index: 150;
+}
+
+@media (min-width: 900px) {
+  .resume-toast {
+    bottom: 24px;
+    left: 24px;
+    transform: none;
+  }
 }
 
 .toast-text {

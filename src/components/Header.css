@@ -132,6 +132,12 @@
   text-shadow: 0 0 8px var(--neon-cyan);
 }
 
+@media (min-width: 900px) {
+  .comic-header {
+    display: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .comic-header {
     padding: 0 10px;
