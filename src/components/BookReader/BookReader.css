@@ -177,24 +177,6 @@
   display: block;
 }
 
-/* Cyber Zoom button on hover */
-.page-zoom-btn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: all var(--duration-fast) var(--ease-spring);
-  z-index: 5;
-  background: rgba(6, 10, 18, 0.9) !important;
-  border-color: var(--neon-cyan) !important;
-  color: var(--neon-cyan) !important;
-}
-
-.book-page:hover .page-zoom-btn {
-  opacity: 1;
-  transform: scale(1);
-}
 
 /* Spine Groove and Crease Shadows */
 .book-spine-groove {

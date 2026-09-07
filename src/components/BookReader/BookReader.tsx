@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { ComicPage } from '../../types/comic';
-import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './BookReader.css';
 
 interface BookReaderProps {
@@ -8,7 +8,6 @@ interface BookReaderProps {
   currentPage: number;
   onPageChange: (page: number) => void;
   onToggleControls: () => void;
-  onZoomPage: (page: ComicPage) => void;
 }
 
 export const BookReader: React.FC<BookReaderProps> = ({
@@ -16,7 +15,6 @@ export const BookReader: React.FC<BookReaderProps> = ({
   currentPage,
   onPageChange,
   onToggleControls,
-  onZoomPage,
 }) => {
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
   const [animating, setAnimating] = useState(false);
@@ -39,66 +37,83 @@ export const BookReader: React.FC<BookReaderProps> = ({
 
   // Preload upcoming pages
   useEffect(() => {
-    const nextIdx = currentPage + 2;
-    if (nextIdx <= totalPages) {
-      const p1 = pages[nextIdx - 1];
-      const p2 = pages[nextIdx];
-      if (p1) {
-        const img1 = new Image();
-        img1.src = p1.src;
-      }
-      if (p2) {
-        const img2 = new Image();
-        img2.src = p2.src;
-      }
-    }
-  }, [currentPage, pages, totalPages]);
+    const pagesToPreload = [
+      currentPage + 1,
+      currentPage + 2,
+      currentPage - 1,
+      currentPage - 2,
+    ];
 
-  const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    pagesToPreload.forEach((num) => {
+      const page = pages.find((p) => p.pageNumber === num);
+      if (page) {
+        const img = new Image();
+        img.src = page.src;
+      }
+    });
+  }, [currentPage, pages]);
+
+  const handleNext = () => {
     if (currentPage >= totalPages || animating) return;
     setTurnDirection('next');
     setAnimating(true);
 
-    const nextTarget = isCover ? 2 : currentPage + (currentPage % 2 === 0 ? 2 : 1);
-    const validTarget = Math.min(nextTarget, totalPages);
-
     setTimeout(() => {
-      onPageChange(validTarget);
+      if (isCover) {
+        onPageChange(2);
+      } else {
+        const next = Math.min(currentPage + 2, totalPages);
+        onPageChange(next);
+      }
       setAnimating(false);
       setTurnDirection(null);
-    }, 280);
+    }, 450);
   };
 
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handlePrev = () => {
     if (currentPage <= 1 || animating) return;
     setTurnDirection('prev');
     setAnimating(true);
 
-    const prevTarget = currentPage === 2 ? 1 : currentPage - 2;
-    const validTarget = Math.max(1, prevTarget);
-
     setTimeout(() => {
-      onPageChange(validTarget);
+      if (currentPage === 2 || currentPage === 3) {
+        onPageChange(1);
+      } else {
+        const prev = Math.max(currentPage - 2, 1);
+        onPageChange(prev);
+      }
       setAnimating(false);
       setTurnDirection(null);
-    }, 280);
+    }, 450);
   };
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        handleNext();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        handlePrev();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentPage, totalPages, animating, isCover]);
+
   return (
-    <div className="book-stage" onClick={onToggleControls}>
+    <div className="book-reader-container" onClick={onToggleControls}>
       {/* Left Click Navigation Zone */}
       {currentPage > 1 && (
         <button
           type="button"
-          className="book-nav-zone zone-left"
+          className="nav-zone nav-zone-left"
           onClick={handlePrev}
-          title="Página anterior (←)"
           aria-label="Página anterior"
+          title="Página anterior (Flecha Izquierda)"
         >
-          <div className="zone-arrow">
-            <ChevronLeft size={36} />
+          <div className="zone-indicator">
+            <ChevronLeft size={28} />
           </div>
         </button>
       )}
@@ -108,7 +123,7 @@ export const BookReader: React.FC<BookReaderProps> = ({
         {isCover ? (
           /* COVER VIEW: Single Centered Page */
           <div className="book-cover-wrapper">
-            <div className="book-page cover-page" onDoubleClick={() => rightPage && onZoomPage(rightPage)}>
+            <div className="book-page cover-page">
               <img
                 src={rightPage?.src}
                 alt="Portada del Cómic"
@@ -116,17 +131,6 @@ export const BookReader: React.FC<BookReaderProps> = ({
                 fetchPriority="high"
                 loading="eager"
               />
-              <button
-                type="button"
-                className="page-zoom-btn icon-btn glass-pill"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (rightPage) onZoomPage(rightPage);
-                }}
-                title="Ampliar portada"
-              >
-                <ZoomIn size={16} />
-              </button>
               <div className="page-sheen" />
             </div>
             {/* Book edge thickness effect */}
@@ -136,10 +140,7 @@ export const BookReader: React.FC<BookReaderProps> = ({
           /* SPREAD VIEW: Two Pages Open Side-by-Side */
           <div className="book-spread-wrapper">
             {/* Left Page (Even) */}
-            <div
-              className={`book-page left-page ${!leftPage ? 'empty' : ''}`}
-              onDoubleClick={() => leftPage && onZoomPage(leftPage)}
-            >
+            <div className={`book-page left-page ${!leftPage ? 'empty' : ''}`}>
               {leftPage && (
                 <>
                   <img
@@ -149,17 +150,6 @@ export const BookReader: React.FC<BookReaderProps> = ({
                     fetchPriority="high"
                     loading="eager"
                   />
-                  <button
-                    type="button"
-                    className="page-zoom-btn icon-btn glass-pill"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onZoomPage(leftPage);
-                    }}
-                    title={`Ampliar página ${leftPage.pageNumber}`}
-                  >
-                    <ZoomIn size={16} />
-                  </button>
                   {/* Spine Crease / Gutter Shadow */}
                   <div className="gutter-shadow gutter-shadow-left" />
                   <div className="page-sheen" />
@@ -171,10 +161,7 @@ export const BookReader: React.FC<BookReaderProps> = ({
             <div className="book-spine-groove" />
 
             {/* Right Page (Odd) */}
-            <div
-              className={`book-page right-page ${!rightPage ? 'empty' : ''}`}
-              onDoubleClick={() => rightPage && onZoomPage(rightPage)}
-            >
+            <div className={`book-page right-page ${!rightPage ? 'empty' : ''}`}>
               {rightPage ? (
                 <>
                   <img
@@ -184,17 +171,6 @@ export const BookReader: React.FC<BookReaderProps> = ({
                     fetchPriority="high"
                     loading="eager"
                   />
-                  <button
-                    type="button"
-                    className="page-zoom-btn icon-btn glass-pill"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onZoomPage(rightPage);
-                    }}
-                    title={`Ampliar página ${rightPage.pageNumber}`}
-                  >
-                    <ZoomIn size={16} />
-                  </button>
                   {/* Spine Crease / Gutter Shadow */}
                   <div className="gutter-shadow gutter-shadow-right" />
                   <div className="page-sheen" />
@@ -213,7 +189,7 @@ export const BookReader: React.FC<BookReaderProps> = ({
       {currentPage < totalPages && (
         <button
           type="button"
-          className="book-nav-zone zone-right"
+          className="nav-zone nav-zone-right"
           onClick={handleNext}
           title="Página siguiente (→)"
           aria-label="Página siguiente"

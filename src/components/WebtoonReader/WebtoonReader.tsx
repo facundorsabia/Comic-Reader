@@ -156,15 +156,6 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
     }
   };
 
-  // Focus a specific page and zoom in
-  const handlePageZoomBtn = (page: ComicPage) => {
-    const el = pageRefs.current.get(page.pageNumber);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-    applyZoom(180);
-  };
-
   // Scroll to current page when changed externally (from scrubber / thumbnails)
   useEffect(() => {
     const targetEl = pageRefs.current.get(currentPage);
@@ -229,20 +220,6 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
                 decoding="async"
                 draggable={false}
               />
-
-              {/* Quick page focus & zoom button */}
-              <button
-                type="button"
-                className="webtoon-zoom-btn icon-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePageZoomBtn(page);
-                }}
-                title={`Enfocar con zoom página ${page.pageNumber}`}
-                aria-label={`Enfocar página ${page.pageNumber}`}
-              >
-                <ZoomIn size={16} />
-              </button>
             </div>
           );
         })}
