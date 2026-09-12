@@ -1,0 +1,138 @@
+/* Mobile Notice Modal Styles (Multivac Theme) */
+
+.mobile-notice-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(4, 5, 4, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: noticeBackdropFade 220ms ease-out forwards;
+}
+
+.mobile-notice-modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(170deg, #181611 0%, #0c0d0b 100%);
+  border: 1px solid var(--mv-amber, #bd9b61);
+  border-radius: 6px;
+  padding: 28px 22px 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(189, 155, 97, 0.25), inset 0 0 0 1px rgba(255, 223, 153, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  animation: noticeModalPop 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mobile-notice-decor-top {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--mv-amber, #bd9b61), transparent);
+  border-radius: 2px;
+}
+
+.mobile-notice-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(189, 155, 97, 0.12);
+  border: 1px solid rgba(189, 155, 97, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 0 20px rgba(189, 155, 97, 0.2);
+}
+
+.mobile-notice-icon {
+  color: var(--mv-amber, #bd9b61);
+}
+
+.mobile-notice-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  color: var(--mv-amber, #bd9b61);
+  text-transform: uppercase;
+  margin: 0 0 14px 0;
+  text-shadow: 0 0 12px rgba(189, 155, 97, 0.35);
+}
+
+.mobile-notice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.mobile-notice-highlight {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--mv-ivory, #f5ecd8);
+  margin: 0;
+}
+
+.mobile-notice-subtext {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--mv-text-muted, #9c9480);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.mobile-notice-action-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #a58248 0%, #ffd28a 50%, #8e7852 100%);
+  border: 1px solid #ffe3ad;
+  border-radius: 4px;
+  color: #0b0c0a;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(189, 155, 97, 0.45);
+  transition: all 180ms ease;
+}
+
+.mobile-notice-action-btn:active {
+  transform: scale(0.98);
+  filter: brightness(1.1);
+}
+
+@keyframes noticeBackdropFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes noticeModalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

@@ -8,6 +8,7 @@ import { SideDock } from './components/SideDock/SideDock';
 import { ThumbnailDrawer } from './components/ThumbnailDrawer/ThumbnailDrawer';
 import { ZoomModal } from './components/ZoomModal/ZoomModal';
 import { HelpModal } from './components/HelpModal';
+import { MobileNoticeModal } from './components/MobileNoticeModal/MobileNoticeModal';
 import { useComicProgress } from './hooks/useComicProgress';
 import { useFullscreen } from './hooks/useFullscreen';
 import { useKeyboardNav } from './hooks/useKeyboardNav';
@@ -245,6 +246,9 @@ export const App: React.FC = () => {
 
       {/* Help Modal */}
       <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+
+      {/* Mobile Experience Notice Modal */}
+      <MobileNoticeModal />
     </div>
   );
 };

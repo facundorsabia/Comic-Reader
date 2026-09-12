@@ -151,7 +151,7 @@ export const SideDock: React.FC<SideDockProps> = ({
           aria-label="Abrir controles"
         >
           <PanelRightOpen size={16} />
-          <span className="floating-page-pill">Controles • Pág. {currentPage}</span>
+          <span className="floating-page-pill">Ver Controles • Pág. {currentPage}</span>
         </button>
 
         <div className="sidedock-floating-mode-switch">

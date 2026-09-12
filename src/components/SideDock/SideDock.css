@@ -9,7 +9,7 @@
   display: none;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 769px) {
   .sidedock-panel {
     display: flex;
     flex-direction: column;
