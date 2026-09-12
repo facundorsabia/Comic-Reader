@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 import React, { useState, useRef } from 'react';
 import type { ComicPage } from '../../types/comic';
 import { X, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
@@ -9,17 +10,19 @@ interface ZoomModalProps {
 }
 
 export const ZoomModal: React.FC<ZoomModalProps> = ({ page, onClose }) => {
-  const [scale, setScale] = useState<number>(1.2);
+  const [scale, setScale] = useState<number>(1.25);
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const dialogRef = useDialogFocus(!!page, onClose);
 
   if (!page) return null;
 
   const handleZoomIn = () => setScale((prev) => Math.min(prev + 0.4, 4.0));
   const handleZoomOut = () => setScale((prev) => Math.max(prev - 0.4, 0.8));
   const handleReset = () => {
-    setScale(1.2);
+    setScale(1.25);
     setPosition({ x: 0, y: 0 });
   };
 
@@ -48,7 +51,7 @@ export const ZoomModal: React.FC<ZoomModalProps> = ({ page, onClose }) => {
   };
 
   return (
-    <div className="zoom-backdrop" onClick={onClose}>
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Inspector de página" className="zoom-backdrop" onClick={onClose}>
       <div
         className="zoom-stage"
         onClick={(e) => e.stopPropagation()}

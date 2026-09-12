@@ -28,15 +28,18 @@ export function useKeyboardNav({
         return;
       }
 
+      if ((e.target as HTMLElement)?.closest('button') && e.key === ' ') return;
       switch (e.key) {
         case 'ArrowRight':
-        case 'KeyD':
+        case 'd':
+        case 'D':
         case 'PageDown':
           e.preventDefault();
           onNext();
           break;
         case 'ArrowLeft':
-        case 'KeyA':
+        case 'a':
+        case 'A':
         case 'PageUp':
           e.preventDefault();
           onPrev();

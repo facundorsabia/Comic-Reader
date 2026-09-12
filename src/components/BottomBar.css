@@ -6,8 +6,8 @@
   padding: 0 24px;
   z-index: 100;
   border-top: 1px solid var(--border-subtle);
-  background: rgba(6, 9, 15, 0.94);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 240, 255, 0.15);
+  background: rgba(15, 14, 11, 0.94);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(176, 132, 72, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,7 +85,7 @@
   appearance: none;
   width: 100%;
   height: 5px;
-  background: rgba(0, 240, 255, 0.12);
+  background: rgba(176, 132, 72, 0.12);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
@@ -119,7 +119,7 @@
   height: 5px;
   background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 8px rgba(176, 132, 72, 0.5);
   pointer-events: none;
   z-index: 1;
 }

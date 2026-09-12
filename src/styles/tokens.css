@@ -1,29 +1,29 @@
 :root {
   /* Cyberpunk Color Palette */
-  --bg-app: #05070b;
+  --bg-app: #050606;
   --bg-surface: rgba(10, 14, 23, 0.88);
   --bg-surface-elevated: rgba(15, 21, 36, 0.95);
-  --bg-overlay: rgba(3, 5, 8, 0.9);
+  --bg-overlay: rgba(15, 14, 11, 0.9);
   
-  --neon-cyan: #00f0ff;
-  --neon-cyan-hover: #38f9d7;
-  --neon-cyan-glow: rgba(0, 240, 255, 0.45);
-  --neon-cyan-subtle: rgba(0, 240, 255, 0.12);
+  --neon-cyan: #e4b777;
+  --neon-cyan-hover: #f5cf91;
+  --neon-cyan-glow: rgba(176, 132, 72, 0.45);
+  --neon-cyan-subtle: rgba(176, 132, 72, 0.12);
 
-  --neon-pink: #ff0055;
-  --neon-pink-hover: #ff2a75;
-  --neon-pink-glow: rgba(255, 0, 85, 0.45);
-  --neon-pink-subtle: rgba(255, 0, 85, 0.12);
+  --neon-pink: #d5a565;
+  --neon-pink-hover: #f5cf91;
+  --neon-pink-glow: rgba(195, 142, 69, 0.45);
+  --neon-pink-subtle: rgba(195, 142, 69, 0.12);
 
-  --neon-yellow: #ffe600;
+  --neon-yellow: #ffb957;
   --neon-yellow-glow: rgba(255, 230, 0, 0.4);
 
-  --neon-purple: #9d00ff;
+  --neon-purple: #a78351;
   --neon-purple-glow: rgba(157, 0, 255, 0.4);
 
-  --border-subtle: rgba(0, 240, 255, 0.18);
+  --border-subtle: rgba(176, 132, 72, 0.18);
   --border-focus: var(--neon-cyan);
-  --border-strong: rgba(0, 240, 255, 0.5);
+  --border-strong: rgba(176, 132, 72, 0.5);
 
   --accent-primary: var(--neon-cyan);
   --accent-primary-hover: var(--neon-cyan-hover);
@@ -33,13 +33,13 @@
   --text-secondary: #94a3b8;
   --text-muted: #475569;
   --text-cyber: var(--neon-cyan);
-  --text-inverse: #05070b;
+  --text-inverse: #050606;
 
   /* Book Realistic Depth in Cyber Ambiance */
   --book-spine-dark: rgba(0, 0, 0, 0.85);
   --book-gutter-shadow: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 12%, rgba(0,0,0,0) 25%);
   --book-gutter-shadow-left: linear-gradient(to left, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 12%, rgba(0,0,0,0) 25%);
-  --book-shadow-outer: 0 20px 60px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 240, 255, 0.08), 0 0 1px rgba(0, 240, 255, 0.3);
+  --book-shadow-outer: 0 20px 60px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(176, 132, 72, 0.08), 0 0 1px rgba(176, 132, 72, 0.3);
 
   /* Typography */
   --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -70,4 +70,19 @@
   --bg-app: #000000;
   --bg-surface: rgba(5, 5, 8, 0.95);
   --bg-surface-elevated: rgba(10, 10, 15, 0.98);
+}
+
+/* MULTIVAC material and typography tokens. Legacy aliases keep existing modules compatible. */
+:root {
+ --mv-void:#050606; --mv-graphite:#0d0d0b; --mv-panel:#15130f;
+ --mv-panel-raised:#1c1913; --mv-ivory:#e0d1b4; --mv-text-muted:#aa987b;
+ --mv-brass:#9d7440; --mv-amber:#ffb957; --mv-warning:#7e251d;
+ --mv-line:rgb(176 132 72 / 45%); --mv-glow:0 0 12px rgb(255 160 48 / 20%);
+ --bg-app:var(--mv-void); --bg-surface:var(--mv-panel); --bg-surface-elevated:var(--mv-panel-raised);
+ --text-primary:var(--mv-ivory); --text-secondary:#bcad92; --text-muted:var(--mv-text-muted);
+ --font-display:'Outfit','Arial Narrow',sans-serif; --font-body:'Outfit',Arial,sans-serif;
+ --font-mono:'Courier New',ui-monospace,monospace;
+ --cyber-cut-sm:none; --cyber-cut-md:none; --cyber-cut-tab:none;
+ --book-shadow-outer:0 12px 36px #0009;
+ --mv-dock-width:360px;
 }

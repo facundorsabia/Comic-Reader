@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../hooks/useDialogFocus';
 import React from 'react';
 import { X, Keyboard, MousePointer } from 'lucide-react';
 import './HelpModal.css';
@@ -8,11 +9,13 @@ interface HelpModalProps {
 }
 
 export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
+  const dialogRef = useDialogFocus(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className="help-backdrop" onClick={onClose}>
-      <div className="help-panel glass-panel" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Ayuda y atajos" className="help-panel glass-panel" onClick={(e) => e.stopPropagation()}>
         <div className="help-header">
           <div className="help-title">
             <Keyboard size={20} className="text-accent" />

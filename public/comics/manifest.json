@@ -1,519 +1,528 @@
 {
   "pages" : [
     {
-      "height" : 2399,
+      "pageNumber" : 1,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_001.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 1,
+      "height" : 2400,
       "src" : "\/comics\/pages\/page_001.jpg",
-      "id" : 1
+      "id" : 1,
+      "aspectRatio" : 0.6666666666666666
     },
     {
-      "height" : 2399,
+      "id" : 2,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_002.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 2,
       "src" : "\/comics\/pages\/page_002.jpg",
-      "id" : 2
+      "pageNumber" : 2,
+      "height" : 2399,
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 3,
+      "src" : "\/comics\/pages\/page_003.jpg",
+      "pageNumber" : 3,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_003.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 3,
-      "src" : "\/comics\/pages\/page_003.jpg",
-      "id" : 3
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 4,
+      "src" : "\/comics\/pages\/page_004.jpg",
+      "pageNumber" : 4,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_004.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 4,
-      "src" : "\/comics\/pages\/page_004.jpg",
-      "id" : 4
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 5,
+      "src" : "\/comics\/pages\/page_005.jpg",
+      "pageNumber" : 5,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_005.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 5,
-      "src" : "\/comics\/pages\/page_005.jpg",
-      "id" : 5
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 6,
+      "src" : "\/comics\/pages\/page_006.jpg",
+      "pageNumber" : 6,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_006.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 6,
-      "src" : "\/comics\/pages\/page_006.jpg",
-      "id" : 6
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 7,
+      "src" : "\/comics\/pages\/page_007.jpg",
+      "pageNumber" : 7,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_007.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 7,
-      "src" : "\/comics\/pages\/page_007.jpg",
-      "id" : 7
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 8,
+      "src" : "\/comics\/pages\/page_008.jpg",
+      "pageNumber" : 8,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_008.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 8,
-      "src" : "\/comics\/pages\/page_008.jpg",
-      "id" : 8
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 9,
+      "src" : "\/comics\/pages\/page_009.jpg",
+      "pageNumber" : 9,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_009.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 9,
-      "src" : "\/comics\/pages\/page_009.jpg",
-      "id" : 9
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 10,
+      "src" : "\/comics\/pages\/page_010.jpg",
+      "pageNumber" : 10,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_010.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 10,
-      "src" : "\/comics\/pages\/page_010.jpg",
-      "id" : 10
+      "aspectRatio" : 0.6666667588961569
     },
     {
       "height" : 2399,
+      "id" : 11,
+      "src" : "\/comics\/pages\/page_011.jpg",
+      "pageNumber" : 11,
       "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_011.jpg",
-      "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 11,
-      "src" : "\/comics\/pages\/page_011.jpg",
-      "id" : 11
+      "aspectRatio" : 0.6666667588961569
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_012.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 12,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_012.jpg",
-      "id" : 12
+      "id" : 12,
+      "height" : 2399,
+      "pageNumber" : 12
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_013.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 13,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_013.jpg",
-      "id" : 13
+      "id" : 13,
+      "height" : 2399,
+      "pageNumber" : 13
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_014.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 14,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_014.jpg",
-      "id" : 14
+      "id" : 14,
+      "height" : 2399,
+      "pageNumber" : 14
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_015.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 15,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_015.jpg",
-      "id" : 15
+      "id" : 15,
+      "height" : 2399,
+      "pageNumber" : 15
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_016.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 16,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_016.jpg",
-      "id" : 16
+      "id" : 16,
+      "height" : 2399,
+      "pageNumber" : 16
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_017.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 17,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_017.jpg",
-      "id" : 17
+      "id" : 17,
+      "height" : 2399,
+      "pageNumber" : 17
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_018.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 18,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_018.jpg",
-      "id" : 18
+      "id" : 18,
+      "height" : 2399,
+      "pageNumber" : 18
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_019.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 19,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_019.jpg",
-      "id" : 19
+      "id" : 19,
+      "height" : 2399,
+      "pageNumber" : 19
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_020.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 20,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_020.jpg",
-      "id" : 20
+      "id" : 20,
+      "height" : 2399,
+      "pageNumber" : 20
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_021.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 21,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_021.jpg",
-      "id" : 21
+      "id" : 21,
+      "height" : 2399,
+      "pageNumber" : 21
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_022.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 22,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_022.jpg",
-      "id" : 22
+      "id" : 22,
+      "height" : 2399,
+      "pageNumber" : 22
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_023.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 23,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_023.jpg",
-      "id" : 23
+      "id" : 23,
+      "height" : 2399,
+      "pageNumber" : 23
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_024.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 24,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_024.jpg",
-      "id" : 24
+      "id" : 24,
+      "height" : 2399,
+      "pageNumber" : 24
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_025.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 25,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_025.jpg",
-      "id" : 25
+      "id" : 25,
+      "height" : 2399,
+      "pageNumber" : 25
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_026.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 26,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_026.jpg",
-      "id" : 26
+      "id" : 26,
+      "height" : 2399,
+      "pageNumber" : 26
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_027.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 27,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_027.jpg",
-      "id" : 27
+      "id" : 27,
+      "height" : 2399,
+      "pageNumber" : 27
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_028.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 28,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_028.jpg",
-      "id" : 28
+      "id" : 28,
+      "height" : 2399,
+      "pageNumber" : 28
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_029.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 29,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_029.jpg",
-      "id" : 29
+      "id" : 29,
+      "height" : 2399,
+      "pageNumber" : 29
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_030.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 30,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_030.jpg",
-      "id" : 30
+      "id" : 30,
+      "height" : 2399,
+      "pageNumber" : 30
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_031.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 31,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_031.jpg",
-      "id" : 31
+      "id" : 31,
+      "height" : 2399,
+      "pageNumber" : 31
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_032.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 32,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_032.jpg",
-      "id" : 32
+      "id" : 32,
+      "height" : 2399,
+      "pageNumber" : 32
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_033.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 33,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_033.jpg",
-      "id" : 33
+      "id" : 33,
+      "height" : 2399,
+      "pageNumber" : 33
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_034.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 34,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_034.jpg",
-      "id" : 34
+      "id" : 34,
+      "height" : 2399,
+      "pageNumber" : 34
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_035.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 35,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_035.jpg",
-      "id" : 35
+      "id" : 35,
+      "height" : 2399,
+      "pageNumber" : 35
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_036.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 36,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_036.jpg",
-      "id" : 36
+      "id" : 36,
+      "height" : 2399,
+      "pageNumber" : 36
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_037.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 37,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_037.jpg",
-      "id" : 37
+      "id" : 37,
+      "height" : 2399,
+      "pageNumber" : 37
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_038.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 38,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_038.jpg",
-      "id" : 38
+      "id" : 38,
+      "height" : 2399,
+      "pageNumber" : 38
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_039.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 39,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_039.jpg",
-      "id" : 39
+      "id" : 39,
+      "height" : 2399,
+      "pageNumber" : 39
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_040.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 40,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_040.jpg",
-      "id" : 40
+      "id" : 40,
+      "height" : 2399,
+      "pageNumber" : 40
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_041.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 41,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_041.jpg",
-      "id" : 41
+      "id" : 41,
+      "height" : 2399,
+      "pageNumber" : 41
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_042.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 42,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_042.jpg",
-      "id" : 42
+      "id" : 42,
+      "height" : 2399,
+      "pageNumber" : 42
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_043.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 43,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_043.jpg",
-      "id" : 43
+      "id" : 43,
+      "height" : 2399,
+      "pageNumber" : 43
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_044.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 44,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_044.jpg",
-      "id" : 44
+      "id" : 44,
+      "height" : 2399,
+      "pageNumber" : 44
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_045.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 45,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_045.jpg",
-      "id" : 45
+      "id" : 45,
+      "height" : 2399,
+      "pageNumber" : 45
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_046.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 46,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_046.jpg",
-      "id" : 46
+      "id" : 46,
+      "height" : 2399,
+      "pageNumber" : 46
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_047.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 47,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_047.jpg",
-      "id" : 47
+      "id" : 47,
+      "height" : 2399,
+      "pageNumber" : 47
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_048.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 48,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_048.jpg",
-      "id" : 48
+      "id" : 48,
+      "height" : 2399,
+      "pageNumber" : 48
     },
     {
-      "height" : 2399,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_049.jpg",
       "aspectRatio" : 0.6666667588961569,
-      "pageNumber" : 49,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_049.jpg",
-      "id" : 49
+      "id" : 49,
+      "height" : 2399,
+      "pageNumber" : 49
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_050.jpg",
-      "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 50,
+      "aspectRatio" : 0.6666667588961569,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_050.jpg",
-      "id" : 50
+      "id" : 50,
+      "height" : 2399,
+      "pageNumber" : 50
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_051.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 51,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_051.jpg",
-      "id" : 51
+      "id" : 51,
+      "height" : 2400,
+      "pageNumber" : 51
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_052.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 52,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_052.jpg",
-      "id" : 52
+      "id" : 52,
+      "height" : 2400,
+      "pageNumber" : 52
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_053.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 53,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_053.jpg",
-      "id" : 53
+      "id" : 53,
+      "height" : 2400,
+      "pageNumber" : 53
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_054.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 54,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_054.jpg",
-      "id" : 54
+      "id" : 54,
+      "height" : 2400,
+      "pageNumber" : 54
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_055.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 55,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_055.jpg",
-      "id" : 55
+      "id" : 55,
+      "height" : 2400,
+      "pageNumber" : 55
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_056.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 56,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_056.jpg",
-      "id" : 56
+      "id" : 56,
+      "height" : 2400,
+      "pageNumber" : 56
     },
     {
-      "height" : 2400,
-      "width" : 1600,
       "thumb" : "\/comics\/thumbs\/thumb_057.jpg",
       "aspectRatio" : 0.6666666666666666,
-      "pageNumber" : 57,
+      "width" : 1600,
       "src" : "\/comics\/pages\/page_057.jpg",
-      "id" : 57
+      "id" : 57,
+      "height" : 2400,
+      "pageNumber" : 57
+    },
+    {
+      "thumb" : "\/comics\/thumbs\/thumb_058.jpg",
+      "aspectRatio" : 0.6666666666666666,
+      "width" : 1600,
+      "src" : "\/comics\/pages\/page_058.jpg",
+      "id" : 58,
+      "height" : 2400,
+      "pageNumber" : 58
     }
   ],
   "title" : "La Última Pregunta",
-  "totalPages" : 57
+  "totalPages" : 58
 }

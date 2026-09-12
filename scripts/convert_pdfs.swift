@@ -29,7 +29,15 @@ guard let items = try? fileManager.contentsOfDirectory(atPath: rawPdfDir) else {
 
 let pdfFiles = items
     .filter { $0.lowercased().hasSuffix(".pdf") }
-    .sorted { $0.localizedStandardCompare($1) == .orderedAscending }
+    .sorted { a, b in
+        let aLower = a.lowercased()
+        let bLower = b.lowercased()
+        let aIsCover = aLower.contains("portada") || aLower.contains("cover")
+        let bIsCover = bLower.contains("portada") || bLower.contains("cover")
+        if aIsCover && !bIsCover { return true }
+        if !aIsCover && bIsCover { return false }
+        return a.localizedStandardCompare(b) == .orderedAscending
+    }
 
 if pdfFiles.isEmpty {
     print("⚠️  No se encontraron archivos .pdf en la carpeta: \u{001B}[33mraw_pdfs/\u{001B}[0m")

@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 import React, { useEffect, useRef } from 'react';
 import type { ComicPage } from '../../types/comic';
 import { X, Layers } from 'lucide-react';
@@ -34,11 +35,13 @@ export const ThumbnailDrawer: React.FC<ThumbnailDrawerProps> = ({
     }
   }, [isOpen, currentPage]);
 
+  const dialogRef = useDialogFocus(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className="drawer-backdrop" onClick={onClose}>
-      <div className="drawer-panel glass-panel" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Índice de páginas" className="drawer-panel glass-panel" onClick={(e) => e.stopPropagation()}>
         <div className="drawer-header">
           <div className="drawer-title">
             <Layers size={18} className="text-accent" />

@@ -11,17 +11,37 @@ export function useFullscreen() {
     return () => document.removeEventListener('fullscreenchange', handleChange);
   }, []);
 
+  const enterFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement && document.fullscreenEnabled) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      // Fullscreen not allowed or not supported
+    }
+  }, []);
+
+  const exitFullscreen = useCallback(async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
+
   const toggleFullscreen = useCallback(async () => {
     try {
       if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
+        await enterFullscreen();
       } else {
-        await document.exitFullscreen();
+        await exitFullscreen();
       }
     } catch {
       // Fullscreen not allowed or supported
     }
-  }, []);
+  }, [enterFullscreen, exitFullscreen]);
 
-  return { isFullscreen, toggleFullscreen };
+  return { isFullscreen, toggleFullscreen, enterFullscreen, exitFullscreen };
 }

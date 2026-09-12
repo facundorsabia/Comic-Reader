@@ -39,10 +39,10 @@
   margin: 0 0 20px 0;
   padding: 0;
   line-height: 0;
-  border: 1px solid rgba(0, 240, 255, 0.22);
+  border: 1px solid rgba(176, 132, 72, 0.22);
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 240, 255, 0.06);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 20px rgba(176, 132, 72, 0.06);
   background: #080b12;
   content-visibility: auto;
   contain-intrinsic-size: 850px 1275px;
@@ -50,8 +50,8 @@
 }
 
 .webtoon-page-item:hover {
-  border-color: rgba(0, 240, 255, 0.45);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 240, 255, 0.12);
+  border-color: rgba(176, 132, 72, 0.45);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 25px rgba(176, 132, 72, 0.12);
 }
 
 .webtoon-image {
@@ -104,7 +104,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 10px 14px;
-  background: rgba(6, 10, 18, 0.94);
+  background: rgba(15, 14, 11, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-focus);
@@ -131,7 +131,7 @@
   align-items: center;
   justify-content: space-between;
   padding-bottom: 4px;
-  border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+  border-bottom: 1px solid rgba(176, 132, 72, 0.15);
 }
 
 .hud-title {
@@ -175,8 +175,8 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.35);
+  background: rgba(176, 132, 72, 0.08);
+  border: 1px solid rgba(176, 132, 72, 0.35);
   clip-path: var(--cyber-cut-sm);
   color: var(--text-primary);
   cursor: pointer;
@@ -184,7 +184,7 @@
 }
 
 .hud-btn:hover:not(:disabled) {
-  background: rgba(0, 240, 255, 0.25);
+  background: rgba(176, 132, 72, 0.25);
   border-color: var(--neon-cyan);
   color: #ffffff;
   box-shadow: 0 0 12px var(--neon-cyan-glow);
@@ -206,7 +206,7 @@
   width: 100%;
   height: 4px;
   appearance: none;
-  background: rgba(0, 240, 255, 0.2);
+  background: rgba(176, 132, 72, 0.2);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
@@ -230,8 +230,8 @@
 
 .hud-percent-badge {
   padding: 4px 8px;
-  background: rgba(0, 240, 255, 0.12);
-  border: 1px solid rgba(0, 240, 255, 0.3);
+  background: rgba(176, 132, 72, 0.12);
+  border: 1px solid rgba(176, 132, 72, 0.3);
   clip-path: var(--cyber-cut-sm);
   font-family: var(--font-mono);
   font-size: 0.76rem;
@@ -244,7 +244,7 @@
 }
 
 .hud-percent-badge:hover {
-  background: rgba(0, 240, 255, 0.25);
+  background: rgba(176, 132, 72, 0.25);
   border-color: var(--neon-cyan);
   box-shadow: 0 0 8px var(--neon-cyan-glow);
 }
@@ -263,8 +263,8 @@
   justify-content: center;
   gap: 4px;
   padding: 5px 6px;
-  background: rgba(10, 16, 28, 0.7);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(15, 14, 11, 0.7);
+  border: 1px solid rgba(176, 132, 72, 0.2);
   clip-path: var(--cyber-cut-sm);
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -277,11 +277,11 @@
 .hud-preset-btn:hover {
   border-color: var(--neon-cyan);
   color: #ffffff;
-  background: rgba(0, 240, 255, 0.15);
+  background: rgba(176, 132, 72, 0.15);
 }
 
 .hud-preset-btn.active {
-  background: rgba(0, 240, 255, 0.25);
+  background: rgba(176, 132, 72, 0.25);
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
   box-shadow: 0 0 10px var(--neon-cyan-glow);
@@ -295,7 +295,7 @@
   transform: translateX(-50%);
   z-index: 150;
   padding: 8px 18px;
-  background: rgba(6, 10, 18, 0.94);
+  background: rgba(15, 14, 11, 0.94);
   border: 1px solid var(--neon-cyan);
   clip-path: var(--cyber-cut-md);
   box-shadow: 0 0 25px var(--neon-cyan-glow);

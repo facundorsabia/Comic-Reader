@@ -2,9 +2,12 @@ import { useState, useRef, useCallback } from 'react';
 
 export type FitMode = 'fit-width' | 'comfort' | 'custom';
 
-export function useWebtoonZoom() {
-  const [zoomPercent, setZoomPercent] = useState<number>(100);
-  const [fitMode, setFitMode] = useState<FitMode>('comfort');
+export function useWebtoonZoom(initialZoom?: number, initialFitMode?: FitMode) {
+  const defaultZoom = initialZoom !== undefined ? initialZoom : 122;
+  const defaultMode = initialFitMode !== undefined ? initialFitMode : 'custom';
+
+  const [zoomPercent, setZoomPercent] = useState<number>(defaultZoom);
+  const [fitMode, setFitMode] = useState<FitMode>(defaultMode);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const toastTimeoutRef = useRef<any>(null);
 

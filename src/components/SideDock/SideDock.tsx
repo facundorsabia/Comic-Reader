@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   BookOpen,
   Scroll,
@@ -15,13 +15,17 @@ import {
   Sparkles,
   PanelRightClose,
   PanelRightOpen,
-  Move
+  Move,
+  GripHorizontal,
+  BookmarkCheck,
 } from 'lucide-react';
 import type { ReaderMode } from '../../types/comic';
 import type { WebtoonZoomControls } from '../../hooks/useWebtoonZoom';
 import './SideDock.css';
+import { PanelHeader, CalibrationScale, PageOrSpreadDisplay } from './Instruments';
 
 interface SideDockProps {
+  spreadEnabled: boolean;
   title: string;
   currentPage: number;
   totalPages: number;
@@ -38,9 +42,12 @@ interface SideDockProps {
   visible: boolean;
   onToggleVisible: () => void;
   zoomControls?: WebtoonZoomControls;
+  savedPage?: number | null;
+  clearSaved?: () => void;
 }
 
 export const SideDock: React.FC<SideDockProps> = ({
+  spreadEnabled,
   title,
   currentPage,
   totalPages,
@@ -57,8 +64,76 @@ export const SideDock: React.FC<SideDockProps> = ({
   visible,
   onToggleVisible,
   zoomControls,
+  savedPage,
+  clearSaved,
 }) => {
-  const percent = Math.round((currentPage / totalPages) * 100) || 0;
+  const first = mode === 'book' && spreadEnabled && currentPage > 1 ? currentPage - currentPage % 2 : currentPage;
+  const last = mode === 'book' && spreadEnabled && first > 1 ? Math.min(first + 1, totalPages) : first;
+
+  // Draggable panel state
+  const [dockPos, setDockPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isDraggingDock, setIsDraggingDock] = useState(false);
+  const dragStartRef = useRef<{ startMouseX: number; startMouseY: number; startDockX: number; startDockY: number }>({
+    startMouseX: 0,
+    startMouseY: 0,
+    startDockX: 0,
+    startDockY: 0,
+  });
+
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    // Prevent dragging when clicking buttons, sliders, etc.
+    if ((e.target as HTMLElement).closest('button, input, a')) return;
+
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+    setIsDraggingDock(true);
+    dragStartRef.current = {
+      startMouseX: clientX,
+      startMouseY: clientY,
+      startDockX: dockPos.x,
+      startDockY: dockPos.y,
+    };
+  };
+
+  useEffect(() => {
+    if (!isDraggingDock) return;
+
+    const handleMouseMove = (e: MouseEvent | TouchEvent) => {
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+      const deltaX = clientX - dragStartRef.current.startMouseX;
+      const deltaY = clientY - dragStartRef.current.startMouseY;
+
+      setDockPos({
+        x: Math.max(-window.innerWidth + 400, Math.min(0, dragStartRef.current.startDockX + deltaX)),
+        y: Math.max(0, Math.min(24, dragStartRef.current.startDockY + deltaY)),
+      });
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingDock(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchmove', handleMouseMove);
+    window.addEventListener('touchend', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchmove', handleMouseMove);
+      window.removeEventListener('touchend', handleMouseUp);
+    };
+  }, [isDraggingDock]);
+
+  useEffect(() => {
+    const reset = () => setDockPos({ x: 0, y: 0 });
+    window.addEventListener('resize', reset);
+    return () => window.removeEventListener('resize', reset);
+  }, []);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onPageChange(parseInt(e.target.value, 10));
@@ -71,61 +146,129 @@ export const SideDock: React.FC<SideDockProps> = ({
         type="button"
         className={`sidedock-floating-toggle ${!visible ? 'visible' : ''}`}
         onClick={onToggleVisible}
-        title="Mostrar panel de controles lateral (M)"
+        title="Mostrar panel de controles (Esc)"
         aria-label="Abrir controles"
       >
         <PanelRightOpen size={18} />
-        <span className="floating-page-pill">Pág. {currentPage}</span>
+        <span className="floating-page-pill">Mostrar Controles • Pág. {currentPage}</span>
       </button>
 
-      {/* Main Side Dock Panel */}
-      <aside className={`sidedock-panel glass-panel ${visible ? 'is-visible' : 'is-hidden'}`}>
-        {/* Dock Header */}
-        <div className="sidedock-section sidedock-header-row">
-          <div className="sidedock-brand" title={title}>
-            <span className="sidedock-dot" />
-            <span className="sidedock-title">{title}</span>
-          </div>
+      {/* Main Side Dock Panel (Draggable & Movable) */}
+      <aside
+        aria-label="Terminal de lectura"
+        inert={!visible}
+        className={`sidedock-panel glass-panel ${visible ? 'is-visible' : 'is-hidden'} ${isDraggingDock ? 'is-dragging' : ''}`}
+        style={{
+          transform: visible
+            ? `translate3d(${dockPos.x}px, ${dockPos.y}px, 0)`
+            : 'translateX(calc(100% + 40px))',
+        }}
+      >
+        {/* Top Drag Grip Bar */}
+        <div
+          className="sidedock-drag-bar"
+          onMouseDown={handleDragStart}
+          onTouchStart={handleDragStart}
+          title="Haz clic y arrastra para mover este panel por la pantalla"
+        >
+          <GripHorizontal size={15} className="drag-icon" />
+          <span className="drag-label">ARRASTRAR / MOVER PANEL</span>
+        </div>
 
-          <div className="sidedock-top-actions">
+        {/* Dock Header & Main Action Buttons */}
+        <div className="sidedock-section sidedock-header-row">
+          <PanelHeader title={title} />
+
+          {/* Explicit Text Buttons: Pantalla Completa & Minimizar */}
+          <div className="sidedock-main-actions-grid">
             <button
               type="button"
-              className={`icon-btn-sm ${isDrawerOpen ? 'active' : ''}`}
-              onClick={onToggleDrawer}
-              title="Miniaturas / Páginas (T)"
-              aria-label="Selector de páginas"
-            >
-              <LayoutGrid size={16} />
-            </button>
-            <button
-              type="button"
-              className="icon-btn-sm"
-              onClick={onOpenHelp}
-              title="Ayuda y atajos (?)"
-              aria-label="Ayuda"
-            >
-              <HelpCircle size={16} />
-            </button>
-            <button
-              type="button"
-              className="icon-btn-sm"
+              className={`sidedock-action-btn ${isFullscreen ? 'active' : ''}`}
+              aria-pressed={isFullscreen}
               onClick={onToggleFullscreen}
-              title={isFullscreen ? 'Salir pantalla completa (F)' : 'Pantalla completa (F)'}
+              title={isFullscreen ? 'Salir de pantalla completa (F)' : 'Activar pantalla completa (F)'}
               aria-label="Pantalla completa"
             >
               {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
+              <span>{isFullscreen ? 'Salir Fullscreen' : 'Pantalla Completa'}</span>
+            </button>
+
+            <button
+              type="button"
+              className="sidedock-action-btn sidedock-minimize-btn"
+              onClick={onToggleVisible}
+              title="Minimizar / Ocultar panel de controles (Esc)"
+              aria-label="Minimizar controles"
+            >
+              <PanelRightClose size={16} />
+              <span>Minimizar</span>
+            </button>
+          </div>
+
+          {/* Secondary Actions: Miniaturas y Ayuda con texto claro */}
+          <div className="sidedock-sub-actions-row">
+            <button
+              type="button"
+              className={`sidedock-sub-btn ${isDrawerOpen ? 'active' : ''}`}
+              aria-pressed={isDrawerOpen}
+              onClick={onToggleDrawer}
+              title="Abrir índice visual de páginas (T)"
+              aria-label="Selector de páginas"
+            >
+              <LayoutGrid size={14} />
+              <span>Miniaturas</span>
             </button>
             <button
               type="button"
-              className="icon-btn-sm collapse-btn"
-              onClick={onToggleVisible}
-              title="Ocultar panel lateral (para lectura 100% inmersiva)"
-              aria-label="Ocultar panel"
+              className="sidedock-sub-btn"
+              onClick={onOpenHelp}
+              title="Ver atajos de teclado y ayuda (?)"
+              aria-label="Ayuda"
             >
-              <PanelRightClose size={16} />
+              <HelpCircle size={14} />
+              <span>Ayuda</span>
             </button>
           </div>
         </div>
+
+        <div className="mv-system-status"><i aria-hidden="true" /> ARCHIVO DISPONIBLE <span>MV—1138—A</span></div>
+
+        {/* Unified Saved Reading Progress Banner */}
+        {savedPage && savedPage !== currentPage && (
+          <div className="sidedock-section sidedock-resume-section">
+            <div className="sidedock-resume-banner">
+              <div className="resume-banner-top">
+                <BookmarkCheck size={15} className="text-accent" />
+                <span className="resume-banner-label">LECTURA ANTERIOR</span>
+              </div>
+              <div className="resume-banner-text">
+                Página guardada: <strong>Pág. {savedPage}</strong>
+              </div>
+              <div className="resume-banner-actions">
+                <button
+                  type="button"
+                  className="cyber-resume-btn"
+                  onClick={() => {
+                    onPageChange(savedPage);
+                    if (clearSaved) clearSaved();
+                  }}
+                  title={`Ir directamente a la página ${savedPage}`}
+                >
+                  Continuar en Pág. {savedPage}
+                </button>
+                <button
+                  type="button"
+                  className="cyber-resume-dismiss-btn"
+                  onClick={clearSaved}
+                  title="Descartar aviso"
+                  aria-label="Descartar aviso de lectura guardada"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Mode Switcher */}
         <div className="sidedock-section">
@@ -134,6 +277,7 @@ export const SideDock: React.FC<SideDockProps> = ({
             <button
               type="button"
               className={`sidedock-mode-btn ${mode === 'webtoon' ? 'active' : ''}`}
+              aria-pressed={mode === 'webtoon'}
               onClick={() => onModeChange('webtoon')}
               title="Lectura continua vertical fluida"
             >
@@ -143,6 +287,7 @@ export const SideDock: React.FC<SideDockProps> = ({
             <button
               type="button"
               className={`sidedock-mode-btn ${mode === 'book' ? 'active' : ''}`}
+              aria-pressed={mode === 'book'}
               onClick={() => onModeChange('book')}
               title="Páginas dobles como libro físico"
             >
@@ -153,32 +298,9 @@ export const SideDock: React.FC<SideDockProps> = ({
         </div>
 
         {/* Navigation & Scrubber */}
-        <div className="sidedock-section">
-          <div className="sidedock-nav-header">
-            <div className="sidedock-page-readout">
-              <span className="readout-prefix">// PÁGINA</span>
-              <span className="readout-current">{String(currentPage).padStart(2, '0')}</span>
-              <span className="readout-total">/ {totalPages}</span>
-            </div>
-            <div className="sidedock-sync-badge">{percent}% SYNC</div>
-          </div>
-
-          {/* Scrubber slider */}
-          <div className="sidedock-slider-container">
-            <input
-              type="range"
-              min="1"
-              max={totalPages}
-              value={currentPage}
-              onChange={handleSliderChange}
-              className="sidedock-page-slider"
-              aria-label="Selector de página"
-            />
-            <div
-              className="sidedock-slider-fill"
-              style={{ width: `${((currentPage - 1) / Math.max(1, totalPages - 1)) * 100}%` }}
-            />
-          </div>
+        <div className="sidedock-section mv-navigation">
+          <PageOrSpreadDisplay current={first} end={last} total={totalPages} />
+          <CalibrationScale min={1} max={totalPages} value={currentPage} label="Selector de página" onChange={handleSliderChange} />
 
           {/* Prev / Next Buttons */}
           <div className="sidedock-nav-buttons">
@@ -196,7 +318,7 @@ export const SideDock: React.FC<SideDockProps> = ({
               type="button"
               className="cyber-btn cyber-btn-pink next-btn"
               onClick={onNext}
-              disabled={currentPage >= totalPages}
+              disabled={last >= totalPages}
               title="Página siguiente (→ o D o Espacio)"
             >
               <span>Siguiente</span>
@@ -205,8 +327,8 @@ export const SideDock: React.FC<SideDockProps> = ({
           </div>
         </div>
 
-        {/* Webtoon Zoom & Fit Controls (Only in Webtoon mode) */}
-        {mode === 'webtoon' && zoomControls && (
+        {/* Webtoon & Book Zoom Controls */}
+        {zoomControls && (
           <div className="sidedock-section sidedock-zoom-section">
             <div className="sidedock-section-title">
               <div className="title-with-icon">
@@ -236,36 +358,38 @@ export const SideDock: React.FC<SideDockProps> = ({
                 <input
                   type="range"
                   min="50"
-                  max="350"
+                  max="400"
                   step="5"
                   value={
                     zoomControls.fitMode === 'comfort'
                       ? 100
                       : zoomControls.fitMode === 'fit-width'
-                      ? 120
+                      ? (mode === 'book' ? 135 : 100)
                       : zoomControls.zoomPercent
                   }
                   onChange={(e) => zoomControls.applyZoom(Number(e.target.value))}
                   className="sidedock-zoom-slider"
                   aria-label="Nivel de zoom"
                 />
+                <div className="mv-zoom-ticks" aria-hidden="true">{[50, 100, 200, 300, 400].map(n => <span key={n} style={{left: `${(n - 50) / 350 * 100}%`}}>{n}</span>)}</div>
               </div>
               <button
                 type="button"
                 className="icon-btn-sm"
                 onClick={zoomControls.handleZoomIn}
-                disabled={zoomControls.fitMode === 'custom' && zoomControls.zoomPercent >= 350}
+                disabled={zoomControls.fitMode === 'custom' && zoomControls.zoomPercent >= 400}
                 title="Acercar (+)"
               >
                 <ZoomIn size={15} />
               </button>
-              <div
+              <button
+                type="button"
                 className="sidedock-percent-badge"
                 onClick={zoomControls.handleResetComfort}
                 title="Restablecer a lectura (100%)"
               >
                 {zoomControls.fitMode === 'fit-width' ? 'ANCHO' : `${zoomControls.zoomPercent}%`}
-              </div>
+              </button>
             </div>
 
             {/* Presets */}
@@ -315,6 +439,7 @@ export const SideDock: React.FC<SideDockProps> = ({
             </div>
           </div>
         )}
+        <footer className="mv-footer"><span>EL CONOCIMIENTO PERDURA</span><span aria-hidden="true">MULTIVAC ∞</span></footer>
       </aside>
     </>
   );

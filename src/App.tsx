@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import type { ComicManifest, ComicPage, ReaderMode } from './types/comic';
 import { Header } from './components/Header';
 import { BottomBar } from './components/BottomBar';
@@ -12,15 +12,18 @@ import { useComicProgress } from './hooks/useComicProgress';
 import { useFullscreen } from './hooks/useFullscreen';
 import { useKeyboardNav } from './hooks/useKeyboardNav';
 import { useWebtoonZoom } from './hooks/useWebtoonZoom';
-import { BookmarkCheck, AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import './App.css';
+import './styles/multivac.css';
+import { useSpreadLayout } from './hooks/useSpreadLayout';
 
 export const App: React.FC = () => {
+  const spreadEnabled = useSpreadLayout();
   const [manifest, setManifest] = useState<ComicManifest | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Modo de lectura por defecto: webtoon
+  // Modo de lectura por defecto: Webtoon continuo con 122% de zoom
   const [mode, setMode] = useState<ReaderMode>('webtoon');
 
   const [controlsVisible, setControlsVisible] = useState(true);
@@ -29,8 +32,13 @@ export const App: React.FC = () => {
   const [zoomedPage, setZoomedPage] = useState<ComicPage | null>(null);
 
   const { currentPage, setPage, savedPage, clearSaved } = useComicProgress(1);
-  const { isFullscreen, toggleFullscreen } = useFullscreen();
-  const zoomControls = useWebtoonZoom();
+  const { isFullscreen, toggleFullscreen, enterFullscreen } = useFullscreen();
+  const zoomControls = useWebtoonZoom(122, 'custom');
+
+  const handleEnterReadingMode = useCallback(() => {
+    setControlsVisible(false);
+    enterFullscreen();
+  }, [enterFullscreen]);
 
   // Load manifest.json
   const fetchManifest = useCallback(async () => {
@@ -54,26 +62,43 @@ export const App: React.FC = () => {
 
   // Navigation handlers
   const totalPages = manifest?.pages.length || 0;
+  const bookNavRef = useRef<{ next: () => void; prev: () => void } | null>(null);
+
+  const handleRegisterBookNav = useCallback((handlers: { next: () => void; prev: () => void } | null) => {
+    bookNavRef.current = handlers;
+  }, []);
 
   const handleNext = useCallback(() => {
+    // Activar modo lectura inmersivo: pantalla completa y minimizar controles
+    handleEnterReadingMode();
+
+    if (mode === 'book' && bookNavRef.current) {
+      bookNavRef.current.next();
+      return;
+    }
     if (currentPage >= totalPages) return;
-    if (mode === 'book') {
+    if (mode === 'book' && spreadEnabled) {
       const step = currentPage === 1 ? 1 : (currentPage % 2 === 0 ? 2 : 1);
       setPage(Math.min(totalPages, currentPage + step));
     } else {
       setPage(Math.min(totalPages, currentPage + 1));
     }
-  }, [currentPage, totalPages, mode, setPage]);
+  }, [handleEnterReadingMode, mode, currentPage, totalPages, spreadEnabled, setPage]);
 
   const handlePrev = useCallback(() => {
+    if (mode === 'book' && bookNavRef.current) {
+      bookNavRef.current.prev();
+      return;
+    }
     if (currentPage <= 1) return;
-    if (mode === 'book') {
-      const step = currentPage === 2 ? 1 : 2;
+    if (mode === 'book' && spreadEnabled) {
+      const first = currentPage - currentPage % 2;
+      const step = currentPage - Math.max(1, first - 2);
       setPage(Math.max(1, currentPage - step));
     } else {
       setPage(Math.max(1, currentPage - 1));
     }
-  }, [currentPage, mode, setPage]);
+  }, [currentPage, mode, spreadEnabled, setPage]);
 
   const handleToggleControls = useCallback(() => {
     setControlsVisible((prev) => !prev);
@@ -92,7 +117,7 @@ export const App: React.FC = () => {
       else if (isHelpOpen) setIsHelpOpen(false);
       else setControlsVisible((prev) => !prev);
     },
-    enabled: !zoomedPage && !isHelpOpen,
+    enabled: !zoomedPage && !isHelpOpen && !isDrawerOpen,
   });
 
   if (loading) {
@@ -128,7 +153,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="app-viewport">
+    <div className={`app-viewport ${controlsVisible ? 'controls-open' : 'controls-closed'}`}>
       {/* Mobile Top Header (hidden on desktop) */}
       <Header
         title={manifest.title}
@@ -148,11 +173,16 @@ export const App: React.FC = () => {
       <main className="reader-area">
         {mode === 'book' ? (
           <BookReader
+            spreadEnabled={spreadEnabled}
             pages={manifest.pages}
             currentPage={currentPage}
             onPageChange={setPage}
             onToggleControls={handleToggleControls}
             onZoomPage={(page) => setZoomedPage(page)}
+            zoomControls={zoomControls}
+            controlsVisible={controlsVisible}
+            registerBookNav={handleRegisterBookNav}
+            onEnterReadingMode={handleEnterReadingMode}
           />
         ) : (
           <WebtoonReader
@@ -162,6 +192,7 @@ export const App: React.FC = () => {
             onToggleControls={handleToggleControls}
             controlsVisible={controlsVisible}
             zoomControls={zoomControls}
+            onMinimizeControls={() => setControlsVisible(false)}
           />
         )}
       </main>
@@ -176,8 +207,9 @@ export const App: React.FC = () => {
         visible={controlsVisible}
       />
 
-      {/* Desktop Unified Side Dock (all controls on the side in desktop) */}
+      {/* Unified Draggable Side Dock */}
       <SideDock
+        spreadEnabled={spreadEnabled}
         title={manifest.title}
         currentPage={currentPage}
         totalPages={totalPages}
@@ -194,35 +226,9 @@ export const App: React.FC = () => {
         visible={controlsVisible}
         onToggleVisible={handleToggleControls}
         zoomControls={zoomControls}
+        savedPage={savedPage}
+        clearSaved={clearSaved}
       />
-
-      {/* Saved Reading Progress Toast */}
-      {savedPage && savedPage !== currentPage && (
-        <div className="resume-toast glass-panel toast-notification">
-          <BookmarkCheck size={20} className="text-accent" />
-          <div className="toast-text">
-            <span>Última lectura guardada: <strong>Pág. {savedPage}</strong></span>
-          </div>
-          <button
-            type="button"
-            className="toast-action-btn"
-            onClick={() => {
-              setPage(savedPage);
-              clearSaved();
-            }}
-          >
-            Continuar
-          </button>
-          <button
-            type="button"
-            className="toast-dismiss-btn"
-            onClick={clearSaved}
-            title="Descartar"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       {/* Thumbnail Drawer */}
       <ThumbnailDrawer

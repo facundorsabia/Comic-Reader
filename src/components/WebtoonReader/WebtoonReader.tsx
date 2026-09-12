@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { ComicPage } from '../../types/comic';
 import { ZoomIn, ZoomOut, Maximize2, RotateCcw, Move, Sparkles } from 'lucide-react';
 import { useWebtoonZoom, type WebtoonZoomControls } from '../../hooks/useWebtoonZoom';
@@ -11,6 +11,7 @@ interface WebtoonReaderProps {
   onToggleControls: () => void;
   controlsVisible?: boolean;
   zoomControls?: WebtoonZoomControls;
+  onMinimizeControls?: () => void;
 }
 
 export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
@@ -20,6 +21,7 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
   onToggleControls,
   controlsVisible = true,
   zoomControls: externalZoom,
+  onMinimizeControls,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const pageRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -94,6 +96,37 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
     };
   }, [pages, currentPage, onPageChange]);
 
+  // Automatically minimize controls and ensure 122% zoom on user scroll without forcing fullscreen
+  const hasTriggeredInitialReadingMode = useRef(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleScrollActivity = () => {
+      if (isProgrammaticScroll.current) return;
+      if (onMinimizeControls) {
+        onMinimizeControls();
+      }
+      if (!hasTriggeredInitialReadingMode.current) {
+        hasTriggeredInitialReadingMode.current = true;
+        if (zoom.zoomPercent !== 122) {
+          zoom.applyZoom(122);
+        }
+      }
+    };
+
+    el.addEventListener('scroll', handleScrollActivity, { passive: true });
+    el.addEventListener('wheel', handleScrollActivity, { passive: true });
+    el.addEventListener('touchmove', handleScrollActivity, { passive: true });
+
+    return () => {
+      el.removeEventListener('scroll', handleScrollActivity);
+      el.removeEventListener('wheel', handleScrollActivity);
+      el.removeEventListener('touchmove', handleScrollActivity);
+    };
+  }, [onMinimizeControls, zoom]);
+
   // Drag to pan horizontally/vertically when zoomed
   const handleMouseDown = (e: React.MouseEvent) => {
     // Only enable mouse drag if clicking background/image, not buttons
@@ -145,7 +178,7 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
   }, [applyZoom, zoomPercent]);
 
   // Handle double click for quick smart zoom toggle on a page
-  const handlePageDoubleClick = (e: React.MouseEvent, pageNum: number) => {
+  const handlePageDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (fitMode === 'comfort' && zoomPercent === 100) {
       // Zoom in to 180% (detail view)
@@ -209,7 +242,7 @@ export const WebtoonReader: React.FC<WebtoonReaderProps> = ({
               }}
               data-page={page.pageNumber}
               className="webtoon-page-item"
-              onDoubleClick={(e) => handlePageDoubleClick(e, page.pageNumber)}
+              onDoubleClick={(e) => handlePageDoubleClick(e)}
             >
               <img
                 src={page.src}
