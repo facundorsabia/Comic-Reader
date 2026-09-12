@@ -66,18 +66,38 @@ button:active:not(:disabled) {transform:translateY(1px);}
 .help-panel,.drawer-panel,.zoom-controls {background:var(--mv-panel);border-color:var(--mv-line);box-shadow:0 12px 40px #0009;}
 .help-panel {max-height:85dvh;overflow:auto;}.shortcut-item {gap:12px;}.brand-dot {animation:none;}
 @media (max-height:780px) and (min-width:900px) {.sidedock-panel {gap:11px;padding:16px;}.sidedock-section {gap:9px;padding-bottom:12px;}.mv-nameplate {padding:10px 4px;}.mv-work {margin-top:10px;}.sidedock-nav-buttons button {height:48px;}}
-@media (max-width:899px) {
- .app-viewport {display:flex;}.app-viewport::before {display:none;}
- .reader-area {width:100%;height:100%;max-height:100%;flex:1;}
- .sidedock-panel {position:relative;inset:auto;width:100%;max-height:42dvh;flex-shrink:0;border-radius:8px 8px 0 0;padding:14px 18px 20px;gap:14px;transform:none!important;}
- .sidedock-panel.is-hidden {display:none;}
- .sidedock-drag-bar {display:none;}.mv-nameplate {padding:7px;}.mv-nameplate h1 {font-size:14px;}.mv-nameplate p {display:none;}
- .mv-work {margin-top:10px;}.sidedock-section {gap:10px;padding-bottom:12px;}
- .sidedock-main-actions-grid,.sidedock-sub-actions-row {display:flex;flex:1;gap:8px;}.sidedock-action-btn,.sidedock-sub-btn {flex:1;}
- .sidedock-header-row {display:grid;grid-template-columns:1fr 1fr;gap:10px;}.mv-panel-header {grid-column:1/-1;}
- .book-stage {padding:14px 14px 28px;}.book-cover-wrapper {width:min(100%,calc((100cqh - 42px)*2/3));}
- .mv-system-status,.mv-footer {font-size:9px;}.sidedock-floating-toggle {top:auto;bottom:16px;}
- .help-panel {width:calc(100vw - 24px);padding:12px;}.shortcut-item {flex-wrap:wrap;}.zoom-controls {max-width:calc(100vw - 16px);gap:5px;}
+@media (max-width:768px) {
+  .header-bar,
+  .bottom-bar,
+  .sidedock-panel,
+  .sidedock-floating-toggle,
+  .webtoon-zoom-hud,
+  .webtoon-toast,
+  .help-panel,
+  .drawer-panel {
+    display: none !important;
+  }
+  .app-viewport {
+    display: block !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .reader-area {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+@media (min-width:769px) and (max-width:899px) {
+  .app-viewport {display:flex;}.app-viewport::before {display:none;}
+  .reader-area {width:100%;height:100%;max-height:100%;flex:1;}
+  .sidedock-panel {position:relative;inset:auto;width:100%;max-height:42dvh;flex-shrink:0;border-radius:8px 8px 0 0;padding:14px 18px 20px;gap:14px;transform:none!important;}
+  .sidedock-panel.is-hidden {display:none;}
+  .sidedock-drag-bar {display:none;}
 }
 @media (prefers-reduced-motion:reduce) {*,*::before,*::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
 /* Keep the complete instrument bank in a standard laptop viewport. */

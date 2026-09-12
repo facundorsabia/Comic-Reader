@@ -141,17 +141,49 @@ export const SideDock: React.FC<SideDockProps> = ({
 
   return (
     <>
-      {/* Floating Collapsed Button (shown when dock is hidden) */}
-      <button
-        type="button"
-        className={`sidedock-floating-toggle ${!visible ? 'visible' : ''}`}
-        onClick={onToggleVisible}
-        title="Mostrar panel de controles (Esc)"
-        aria-label="Abrir controles"
-      >
-        <PanelRightOpen size={18} />
-        <span className="floating-page-pill">Mostrar Controles • Pág. {currentPage}</span>
-      </button>
+      {/* Floating Collapsed Widget with Mode Switcher (shown when dock is hidden) */}
+      <div className={`sidedock-floating-widget ${!visible ? 'visible' : ''}`}>
+        <button
+          type="button"
+          className="sidedock-floating-toggle"
+          onClick={onToggleVisible}
+          title="Mostrar panel de controles (Esc)"
+          aria-label="Abrir controles"
+        >
+          <PanelRightOpen size={16} />
+          <span className="floating-page-pill">Controles • Pág. {currentPage}</span>
+        </button>
+
+        <div className="sidedock-floating-mode-switch">
+          <span className="floating-mode-label">MODO</span>
+          <div className="floating-mode-pill-group">
+            <button
+              type="button"
+              className={`floating-mode-btn ${mode === 'webtoon' ? 'active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onModeChange('webtoon');
+              }}
+              title="Modo Webtoon (Scroll Vertical)"
+            >
+              <Scroll size={12} />
+              <span>WEB</span>
+            </button>
+            <button
+              type="button"
+              className={`floating-mode-btn ${mode === 'book' ? 'active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onModeChange('book');
+              }}
+              title="Modo Libro (Páginas 3D)"
+            >
+              <BookOpen size={12} />
+              <span>BOOK</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Main Side Dock Panel (Draggable & Movable) */}
       <aside

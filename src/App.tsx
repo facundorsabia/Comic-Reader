@@ -26,7 +26,8 @@ export const App: React.FC = () => {
   // Modo de lectura por defecto: Webtoon continuo con 122% de zoom
   const [mode, setMode] = useState<ReaderMode>('webtoon');
 
-  const [controlsVisible, setControlsVisible] = useState(true);
+  // Controles minimizados por defecto al ingresar
+  const [controlsVisible, setControlsVisible] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [zoomedPage, setZoomedPage] = useState<ComicPage | null>(null);

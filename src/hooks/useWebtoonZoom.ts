@@ -2,9 +2,15 @@ import { useState, useRef, useCallback } from 'react';
 
 export type FitMode = 'fit-width' | 'comfort' | 'custom';
 
+const isMobileClient = () => {
+  if (typeof window === 'undefined') return false;
+  return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 export function useWebtoonZoom(initialZoom?: number, initialFitMode?: FitMode) {
-  const defaultZoom = initialZoom !== undefined ? initialZoom : 122;
-  const defaultMode = initialFitMode !== undefined ? initialFitMode : 'custom';
+  const isMobile = isMobileClient();
+  const defaultZoom = initialZoom !== undefined ? initialZoom : (isMobile ? 100 : 122);
+  const defaultMode = initialFitMode !== undefined ? initialFitMode : (isMobile ? 'fit-width' : 'custom');
 
   const [zoomPercent, setZoomPercent] = useState<number>(defaultZoom);
   const [fitMode, setFitMode] = useState<FitMode>(defaultMode);
@@ -53,8 +59,8 @@ export function useWebtoonZoom(initialZoom?: number, initialFitMode?: FitMode) {
   const isZoomedWide = fitMode === 'fit-width' || (fitMode === 'custom' && zoomPercent > 125);
 
   const getFeedWidthStyle = () => {
-    if (fitMode === 'fit-width') {
-      return { width: '100%', maxWidth: '100%', padding: '0 8px' };
+    if (fitMode === 'fit-width' || isMobile) {
+      return { width: '100%', maxWidth: '100%', padding: '0px' };
     }
     if (fitMode === 'comfort') {
       return { width: '100%', maxWidth: '850px', padding: '0 16px' };
